@@ -1,0 +1,37 @@
+[
+  {
+    "id": "possibleSafetyIncident",
+    "name": "Possible Safety Incident (Fall Detection)",
+    "description": "Person falls near entrance, voice prompt fails to elicit response, AI escalates incident to caregiver.",
+    "targetSeverity": "high",
+    "expectedOutcome": "Incident #1042 escalated to Sarah Mitchell with conservative fall confidence (94%)."
+  },
+  {
+    "id": "visitorArrives",
+    "name": "Visitor Arrives (Doorbell Chime)",
+    "description": "A guest approaches front porch, presses the Ring doorbell, and prompts a welcoming status.",
+    "targetSeverity": "low",
+    "expectedOutcome": "Doorbell ring notification logged without false alarm."
+  },
+  {
+    "id": "packageDetected",
+    "name": "Package Delivery Detected",
+    "description": "Courier places parcel on front porch, AI confirms delivery and updates parcel log.",
+    "targetSeverity": "low",
+    "expectedOutcome": "Package delivery recorded, parcel counter incremented."
+  },
+  {
+    "id": "unknownVisitor",
+    "name": "Unknown Visitor / Dwell",
+    "description": "Unrecognized individual loiters on patio for prolonged duration without ringing.",
+    "targetSeverity": "medium",
+    "expectedOutcome": "Attention alert raised for prolonged dwelling time (35s)."
+  },
+  {
+    "id": "doorLeftOpen",
+    "name": "Door Left Open",
+    "description": "Side entry door opened and remains unclosed.",
+    "targetSeverity": "medium",
+    "expectedOutcome": "Sensor alert raised after 30s open threshold."
+  }
+]

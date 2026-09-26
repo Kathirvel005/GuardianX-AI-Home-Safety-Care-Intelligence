@@ -1,0 +1,34 @@
+{
+  "tables": [
+    {
+      "TableName": "guardianx-events",
+      "KeySchema": [
+        { "AttributeName": "id", "KeyType": "HASH" }
+      ],
+      "AttributeDefinitions": [
+        { "AttributeName": "id", "AttributeType": "S" },
+        { "AttributeName": "timestamp", "AttributeType": "S" }
+      ],
+      "BillingMode": "PAY_PER_REQUEST",
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "TimestampIndex",
+          "KeySchema": [
+            { "AttributeName": "timestamp", "KeyType": "HASH" }
+          ],
+          "Projection": { "ProjectionType": "ALL" }
+        }
+      ]
+    },
+    {
+      "TableName": "guardianx-incidents",
+      "KeySchema": [
+        { "AttributeName": "id", "KeyType": "HASH" }
+      ],
+      "AttributeDefinitions": [
+        { "AttributeName": "id", "AttributeType": "S" }
+      ],
+      "BillingMode": "PAY_PER_REQUEST"
+    }
+  ]
+}

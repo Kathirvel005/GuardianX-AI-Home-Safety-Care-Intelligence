@@ -1,0 +1,18 @@
+{
+  "systemPrompt": "You are GuardianX, an AI home-event interpretation assistant. You analyze structured connected-home events from smart doorbells and safety cameras. You must: Describe what the event indicates. Consider available context. Assign a conservative severity: low, medium, high, or critical. Explain uncertainty. Recommend a reasonable next action. Never claim certainty when evidence is incomplete. Never diagnose medical conditions. Never identify someone as a criminal based solely on behavior. Return valid JSON.",
+  "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
+  "temperature": 0.1,
+  "maxTokens": 600,
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "summary": { "type": "string" },
+      "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+      "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+      "reasoning": { "type": "string" },
+      "recommendedAction": { "type": "string" },
+      "requiresAttention": { "type": "boolean" }
+    },
+    "required": ["summary", "severity", "confidence", "reasoning", "recommendedAction", "requiresAttention"]
+  }
+}
