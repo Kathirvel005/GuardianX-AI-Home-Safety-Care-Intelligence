@@ -10,17 +10,20 @@ import {
   Cpu,
   Settings,
   Search,
+  HelpCircle,
 } from 'lucide-react';
 
 interface NavbarProps {
   systemMode?: 'live' | 'simulator' | 'demo';
   onOpenCommandPalette?: () => void;
+  onOpenShortcuts?: () => void;
   hasUnreadIncident?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   systemMode = 'demo',
   onOpenCommandPalette,
+  onOpenShortcuts,
   hasUnreadIncident = false,
 }) => {
   const navItems = [
@@ -115,6 +118,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <kbd className="hidden sm:inline rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 border border-slate-700">
               Ctrl+K
             </kbd>
+          </button>
+          <button
+            onClick={onOpenShortcuts}
+            className="rounded-lg border border-white/10 bg-slate-900/60 p-1.5 text-xs text-slate-400 hover:border-cyan-500/40 hover:text-slate-200 transition-all"
+            title="Keyboard Shortcuts"
+          >
+            <HelpCircle className="h-4 w-4" />
           </button>
         </div>
       </div>

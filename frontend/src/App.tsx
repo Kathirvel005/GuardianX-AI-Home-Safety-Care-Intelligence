@@ -3,8 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { DemoBar } from './components/DemoBar';
 import { CommandPalette } from './components/CommandPalette';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { NotificationToast } from './components/NotificationToast';
 import { useSocket } from './hooks/useSocket';
+import { soundFx } from './utils/audioAlert';
 
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
@@ -18,6 +20,7 @@ import { SettingsPage } from './pages/SettingsPage';
 
 export const App: React.FC = () => {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
   const {
     latestEvent,
@@ -28,6 +31,19 @@ export const App: React.FC = () => {
     latestNotification,
   } = useSocket();
 
+  // Trigger audio feedback on critical alerts or doorbell rings
+  React.useEffect(() => {
+    if (latestIncident && latestIncident.status === 'open') {
+      soundFx.playCriticalAlert();
+    }
+  }, [latestIncident]);
+
+  React.useEffect(() => {
+    if (latestEvent && latestEvent.eventType === 'visitor_detected') {
+      soundFx.playDoorbellChime();
+    }
+  }, [latestEvent]);
+
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-[#070a12] text-slate-100 flex flex-col font-sans">
@@ -35,6 +51,7 @@ export const App: React.FC = () => {
         <Navbar
           systemMode="demo"
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
+          onOpenShortcuts={() => setShortcutsOpen(true)}
           hasUnreadIncident={Boolean(latestIncident && latestIncident.status === 'open')}
         />
 
@@ -48,6 +65,12 @@ export const App: React.FC = () => {
         <CommandPalette
           isOpen={commandPaletteOpen}
           onClose={() => setCommandPaletteOpen(false)}
+        />
+
+        {/* Keyboard Shortcuts Modal */}
+        <KeyboardShortcutsModal
+          isOpen={shortcutsOpen}
+          onClose={() => setShortcutsOpen(false)}
         />
 
         {/* App Routes */}
