@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: GuardianX API
+  description: AI Home Safety & Care Intelligence REST API specification.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Local Development Server
+
+paths:
+  /health:
+    get:
+      summary: Service Health Check
+      responses:
+        '200':
+          description: Service operational status
+
+  /devices:
+    get:
+      summary: List Connected Ring Devices
+      responses:
+        '200':
+          description: List of active Ring devices and sensor telemetry
+
+  /events:
+    get:
+      summary: Query Recent Home Events
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: type
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of filtered home events
+    post:
+      summary: Ingest / Trigger Home Event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [eventType, location]
+              properties:
+                eventType:
+                  type: string
+                location:
+                  type: string
+                deviceId:
+                  type: string
+                confidence:
+                  type: number
+      responses:
+        '201':
+          description: Event processed and evaluated by AI pipeline
+
+  /incidents:
+    get:
+      summary: List Active Safety Incidents
+      responses:
+        '200':
+          description: List of safety incidents and escalation history
+
+  /incidents/{id}/resolve:
+    post:
+      summary: Mark Incident as Resolved
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated incident status
+
+  /ai/analyze:
+    post:
+      summary: Ad-hoc Event Reasoning via Amazon Bedrock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Conservative AI analysis result
+
+  /assistant/query:
+    post:
+      summary: Ask GuardianX Voice/Text Assistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+      responses:
+        '200':
+          description: Natural language summary and related event IDs
+
+  /demo/scenario:
+    post:
+      summary: Execute Deterministic Demo Scenario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scenarioId]
+              properties:
+                scenarioId:
+                  type: string
+                delayMs:
+                  type: integer
+      responses:
+        '200':
+          description: Scenario execution started
+
+  /integrations/status:
+    get:
+      summary: Get Integration Connectivity Diagnostics
+      responses:
+        '200':
+          description: Non-fabricated statuses for Ring, Bedrock, DynamoDB, S3, and WebSocket
